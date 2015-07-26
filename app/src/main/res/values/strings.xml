@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Procast-v2</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="menu_subscribe">Subscribe</string>
+    <string name="menu_mediaplayer">Media Player</string>
+    <string name="mediaplayer_play">Play</string>
+    <string name="title_activity_subscribe">SubscribeActivity</string>
+    <string name="title_activity_mediaplayer">MediaplayerActivity</string>
+    <string name="title_activity_subscribe_categories">SubscribeCategories</string>
+</resources>

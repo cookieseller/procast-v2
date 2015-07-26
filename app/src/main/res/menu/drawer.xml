@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_subscribe"
+            android:icon="@drawable/ic_add"
+            android:title="@string/menu_subscribe" />
+        <item
+            android:id="@+id/navigation_mediaplayer"
+            android:icon="@drawable/ic_play"
+            android:title="@string/menu_mediaplayer" />
+    </group>
+
+    <item
+        android:id="@+id/navigation_subheader"
+        android:title="navigation_subheader">
+        <menu>
+            <item
+                android:id="@+id/navigation_sub_item_1"
+                android:icon="@drawable/feed_icon"
+                android:title="navigation_sub_item_1"/>
+        </menu>
+    </item>
+</menu>
