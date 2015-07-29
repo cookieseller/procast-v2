@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
@@ -95,9 +94,6 @@ public class SubscribeCategoriesActivity extends AppCompatActivity {
 
             progressBar.setVisibility(View.GONE);
             gridView.setVisibility(View.VISIBLE);
-
-//            Intent subscribeActivity = new Intent(context, SubscribeCategoriesActivity.class);
-//            startActivity(subscribeActivity);
         }
     }
 
@@ -108,7 +104,7 @@ public class SubscribeCategoriesActivity extends AppCompatActivity {
             Intent subscribeActivity = new Intent(SubscribeCategoriesActivity.this, SubscribeActivity.class);
 
             Podcast podcast = (Podcast) adapter.getItemAtPosition(position);
-            subscribeActivity.putExtra("FeedURL", podcast.feedUrlString);
+            subscribeActivity.putExtra("Podcast", podcast);
             startActivity(subscribeActivity);
         }
     }

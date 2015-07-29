@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import fix.de.procast.Data.Podcast;
-import fix.de.procast.network.HttpDownloader;
 
 public class FeedWranglerParser {
 

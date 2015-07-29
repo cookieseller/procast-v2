@@ -7,10 +7,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import fix.de.procast.Data.Podcast;
 import fix.de.procast.R;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndFeed;
 import com.google.code.rome.android.repackaged.com.sun.syndication.fetcher.FeedFetcher;
 import com.google.code.rome.android.repackaged.com.sun.syndication.fetcher.FetcherException;
@@ -41,8 +40,8 @@ public class SubscribeActivity extends AppCompatActivity {
 
         toolbar.setNavigationOnClickListener(new BackButtonListener());
 
-        String feedUrl = getIntent().getStringExtra("FeedURL");
-        new PopularFeedLoader().execute(feedUrl);
+        Podcast podcast = getIntent().getParcelableExtra("Podcast");
+        new PopularFeedLoader().execute(podcast.feedUrlString);
     }
 
     private class BackButtonListener implements View.OnClickListener {
