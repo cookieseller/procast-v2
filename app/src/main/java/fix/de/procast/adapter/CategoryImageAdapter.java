@@ -29,8 +29,7 @@ public class CategoryImageAdapter extends BaseAdapter {
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        View gridView;
-        gridView = convertView;
+        View gridView = convertView;
 
         if (gridView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

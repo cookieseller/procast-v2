@@ -10,14 +10,10 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/primary"/>
 
-    <TextView
-        android:id="@+id/author"
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
+    </ListView>
 
 </LinearLayout>
