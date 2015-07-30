@@ -16,8 +16,16 @@ import fix.de.procast.Data.Podcast;
 public class FeedWranglerParser {
 
     public ArrayList<Podcast> getPopularPodcasts() {
+        return getListFromURL("https://feedwrangler.net/api/v2/podcasts/popular");
+    }
+
+    public ArrayList<Podcast> getCategories() {
+        return getListFromURL("https://feedwrangler.net/api/v2/podcasts/categories");
+    }
+
+    private ArrayList<Podcast> getListFromURL(String url) {
         try {
-            String json = readJSONStringFromUrl("https://feedwrangler.net/api/v2/podcasts/popular");
+            String json = readJSONStringFromUrl("https://feedwrangler.net/api/v2/podcasts/categories");
             JSONObject rootObject = new JSONObject(json);
 
             if (jsonContainsError(rootObject)) {
