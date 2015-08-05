@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import fix.de.procast.Data.Category;
 import fix.de.procast.Data.Podcast;
+import fix.de.procast.OnlineDirectory.FeedWranglerParser;
 import fix.de.procast.R;
 import fix.de.procast.adapter.ImageListAdapter;
 
@@ -37,7 +38,7 @@ public class SubscribeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subscribe);
 
         context = this;
-        Podcast podcast = getIntent().getParcelableExtra("Podcast");
+        String podcast = getIntent().getStringExtra("Podcast");
 
         list = (ListView) findViewById(R.id.listView);
 
@@ -49,7 +50,7 @@ public class SubscribeActivity extends AppCompatActivity {
 
         toolbar.setNavigationOnClickListener(new BackButtonListener());
 
-        new PopularFeedLoader().execute(podcast.feedUrlString);
+        new CategoryFeedLoader().execute(podcast);
     }
 
     private class BackButtonListener implements View.OnClickListener {
@@ -59,15 +60,13 @@ public class SubscribeActivity extends AppCompatActivity {
         }
     }
 
-    private class PopularFeedLoader extends AsyncTask<String, String, SyndFeed>
-    {
+    private class CategoryFeedLoader extends AsyncTask<String, String, SyndFeed> {
         @Override
-        protected SyndFeed doInBackground(String... params)
-        {
+        protected SyndFeed doInBackground(String... params) {
             try {
                 FeedFetcher feedFetcher = new HttpURLFeedFetcher();
                 return feedFetcher.retrieveFeed(new URL(params[0]));
-            } catch (IOException|FeedException|FetcherException e) {
+            } catch (IOException | FeedException | FetcherException e) {
                 e.printStackTrace();
             }
 
@@ -75,10 +74,9 @@ public class SubscribeActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(SyndFeed feed)
-        {
+        protected void onPostExecute(SyndFeed feed) {
             List<SyndEntry> entries = new ArrayList<>();
-            for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext();) {
+            for (Iterator<?> entryIter = feed.getEntries().iterator(); entryIter.hasNext(); ) {
                 SyndEntry entry = (SyndEntry) entryIter.next();
 
                 entries.add(entry);
@@ -86,8 +84,8 @@ public class SubscribeActivity extends AppCompatActivity {
 //                    entry.getAuthor();
 //                }
             }
-            ImageListAdapter adapter = new ImageListAdapter(context, entries);
-            list.setAdapter(adapter);
+//            ImageListAdapter adapter = new ImageListAdapter(context, entries);
+//            list.setAdapter(adapter);
         }
     }
 }

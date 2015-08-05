@@ -15,32 +15,53 @@ import java.net.URL;
 import fix.de.procast.misc.Constants;
 import fix.de.procast.network.HttpDownloader;
 
-public class Podcast implements Parcelable {
+public class Category implements Parcelable {
     public String title;
     public String remoteImage;
-    public URL feedUrl;
-    public String feedUrlString;
+    public URL categoryUrl;
+    public String categoryUrlString;
 
-    public Podcast() {
+    public Category() {
     }
 
-    public Podcast(Parcel parcel) {
+    public Category(Parcel parcel) {
         title = parcel.readString();
         remoteImage = parcel.readString();
-        feedUrlString = parcel.readString();
+        categoryUrlString = parcel.readString();
         try {
-            feedUrl = new URL(feedUrlString);
+            categoryUrl = new URL(categoryUrlString);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setCategoryFromJSONObject(JSONObject json) {
+        try {
+            this.title = json.getString("title");
+            this.remoteImage = json.getString("image_url");
+            this.setURLString(json.getString("podcasts_url"));
+            this.categoryUrl = new URL(this.categoryUrlString);
+
+        } catch (JSONException | MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setURLString(String urlString) {
+        if (urlString.startsWith("/")) {
+            urlString = "https://feedwrangler.net" + urlString;
+        }
+        this.categoryUrlString = urlString;
     }
 
     public void setValuesFromJSONObject(JSONObject json) {
         try {
             this.title = json.getString("title");
             this.remoteImage = json.getString("image_url");
-            this.feedUrl = new URL(json.getString("feed_url"));
-            this.feedUrlString = json.getString("feed_url");
+            this.categoryUrl = new URL(json.getString("feed_url"));
+            this.categoryUrlString = json.getString("feed_url");
+
+            new HttpDownloader().downloadImageFromUrl(json.getString("image_url"), json.getString("title"));
         } catch (JSONException | MalformedURLException e) {
             e.printStackTrace();
         }
@@ -71,19 +92,19 @@ public class Podcast implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeString(remoteImage);
-        dest.writeString(feedUrlString);
+        dest.writeString(categoryUrlString);
     }
 
-    public static final Parcelable.Creator<Podcast> CREATOR = new Parcelable.Creator<Podcast>() {
+    public static final Creator<Category> CREATOR = new Creator<Category>() {
 
         @Override
-        public Podcast createFromParcel(Parcel source) {
-            return new Podcast(source);
+        public Category createFromParcel(Parcel source) {
+            return new Category(source);
         }
 
         @Override
-        public Podcast[] newArray(int size) {
-            return new Podcast[size];
+        public Category[] newArray(int size) {
+            return new Category[size];
         }
     };
 }

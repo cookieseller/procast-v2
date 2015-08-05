@@ -8,18 +8,19 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.code.rome.android.repackaged.com.sun.syndication.feed.synd.SyndEntry;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import fix.de.procast.Data.Podcast;
 import fix.de.procast.R;
 
 public class ImageListAdapter extends BaseAdapter {
 
     private Context context;
-    private List<SyndEntry> entries;
+    private List<Podcast> entries;
 
-    public ImageListAdapter(Context context, List<SyndEntry> entries) {
+    public ImageListAdapter(Context context, List<Podcast> entries) {
         this.context = context;
         this.entries = entries;
     }
@@ -29,7 +30,7 @@ public class ImageListAdapter extends BaseAdapter {
 
         if (listView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            listView = layoutInflater.inflate(R.layout.subscribe_row, null);
+            listView = layoutInflater.inflate(R.layout.podcastlist_row, parent, false);
 
             ViewHolder viewHolder = new ViewHolder();
             viewHolder.firstLine = (TextView) listView.findViewById(R.id.firstLine);
@@ -40,16 +41,21 @@ public class ImageListAdapter extends BaseAdapter {
         }
 
         ViewHolder holder = (ViewHolder) listView.getTag();
-        holder.firstLine.setText(entries.get(position).getTitle());
-        holder.secondLine.setText(entries.get(position).getDescription().getValue());
-//        holder.image.setImageBitmap();
+        holder.firstLine.setText(entries.get(position).title);
+        holder.secondLine.setText("");
+        Glide.with(context)
+                .load(entries.get(position).remoteImage)
+                .asBitmap()
+                .fitCenter()
+                .placeholder(R.drawable.progress_spinner)
+                .into(holder.image);
 
         return listView;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return entries.get(position);
     }
 
     @Override

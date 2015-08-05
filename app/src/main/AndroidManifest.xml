@@ -34,6 +34,10 @@
             android:name=".ui.SubscribeCategoriesActivity"
             android:label="@string/title_activity_subscribe_categories" >
         </activity>
+        <activity
+            android:name=".ui.PodcastListActivity"
+            android:label="@string/title_activity_subscribe_categories" >
+        </activity>
     </application>
 
 </manifest>

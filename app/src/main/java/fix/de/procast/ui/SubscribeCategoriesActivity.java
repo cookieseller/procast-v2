@@ -2,6 +2,7 @@ package fix.de.procast.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
+import fix.de.procast.Data.Category;
 import fix.de.procast.Data.Podcast;
 import fix.de.procast.OnlineDirectory.FeedWranglerParser;
 import fix.de.procast.R;
@@ -24,7 +28,6 @@ import fix.de.procast.adapter.CategoryImageAdapter;
 
 public class SubscribeCategoriesActivity extends AppCompatActivity {
 
-    int smallest = 0;
     private Context context;
     private GridView gridView;
     private ProgressBar progressBar;
@@ -42,14 +45,8 @@ public class SubscribeCategoriesActivity extends AppCompatActivity {
 
         toolbar.setNavigationOnClickListener(new BackButtonListener());
 
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-
-        display.getSize(size);
-        smallest = size.x < size.y ? size.x : size.y;
-
         gridView = (GridView) findViewById(R.id.categories);
-        gridView.setAdapter(new CategoryImageAdapter(this, smallest, new ArrayList<Podcast>()));
+        gridView.setAdapter(new CategoryImageAdapter(this, new ArrayList<Category>()));
         gridView.setOnItemClickListener(new GridViewItemClickListener());
 
         context = this;
@@ -66,9 +63,7 @@ public class SubscribeCategoriesActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+        return item.getItemId() == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
     private class BackButtonListener implements View.OnClickListener {
@@ -78,19 +73,19 @@ public class SubscribeCategoriesActivity extends AppCompatActivity {
         }
     }
 
-    private class PopularFeedLoader extends AsyncTask<Context, String, ArrayList<Podcast>>
+    private class PopularFeedLoader extends AsyncTask<Context, String, ArrayList<Category>>
     {
         @Override
-        protected ArrayList<Podcast> doInBackground(Context... params)
+        protected ArrayList<Category> doInBackground(Context... params)
         {
             FeedWranglerParser parser = new FeedWranglerParser();
-            return parser.getPopularPodcasts();
+            return parser.getCategories();
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Podcast> list)
+        protected void onPostExecute(ArrayList<Category> list)
         {
-            gridView.setAdapter(new CategoryImageAdapter(context, smallest, list));
+            gridView.setAdapter(new CategoryImageAdapter(context, list));
 
             progressBar.setVisibility(View.GONE);
             gridView.setVisibility(View.VISIBLE);
@@ -101,11 +96,11 @@ public class SubscribeCategoriesActivity extends AppCompatActivity {
     {
         @Override
         public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-            Intent subscribeActivity = new Intent(SubscribeCategoriesActivity.this, SubscribeActivity.class);
+            Intent podcastListActivity = new Intent(SubscribeCategoriesActivity.this, PodcastListActivity.class);
 
-            Podcast podcast = (Podcast) adapter.getItemAtPosition(position);
-            subscribeActivity.putExtra("Podcast", podcast);
-            startActivity(subscribeActivity);
+            Category category = (Category) adapter.getItemAtPosition(position);
+            podcastListActivity.putExtra("ListURL", category.categoryUrlString);
+            startActivity(podcastListActivity);
         }
     }
 }

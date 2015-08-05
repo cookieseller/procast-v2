@@ -27,4 +27,5 @@ dependencies {
     compile project('libs:volley')
     compile files('libs/android-rome-feed-reader-1.0.0.jar')
     compile files('libs/jdom-1.1.1-android-fork.jar')
+    compile files('libs/glide-3.6.1.jar')
 }
